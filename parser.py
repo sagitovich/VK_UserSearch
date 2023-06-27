@@ -19,14 +19,14 @@ def parser(user_id):
         user_name = soup.find(class_="op_header").text  # получаем имя пользователя и переводим его в текст
         third_mess_1_1 = "Имя пользователя: "
         third_mess_1_2 = f"{user_name.strip()}\n"
-        third_mess_1 = third_mess_1_1 + third_mess_1_2 #Вывод фамилии имени, аналогичное принту ниже
-        #print("Имя пользователя: ", f"{user_name.strip()}")
+        third_mess_1 = third_mess_1_1 + third_mess_1_2  # Вывод фамилии имени, аналогичное принту ниже
+        # print("Имя пользователя: ", f"{user_name.strip()}")
     except:
         exists = False
         third_mess_1 = "Пользователя с таким id не существует"
         return third_mess_1
-        #print("Пользователя с таким id не существует")
-    # суть в том, что, если пользователя не существует, то паркер не найдёт таких данных, как "имя пользователя"
+        # print("Пользователя с таким id не существует")
+    # суть в том, что, если пользователя не существует, то парсер не найдёт таких данных, как "имя пользователя"
 
     if exists:  # если страница существует
 
@@ -34,11 +34,11 @@ def parser(user_id):
             last_activity = soup.find(class_="pp_last_activity_text").text  # получаем последнюю активность пользователя
             third_mess_2_1 = 'Последняя активность: '
             third_mess_2_2 = f"{last_activity.strip()}\n"
-            third_mess_2 = third_mess_2_1 + third_mess_2_2 #Вывод последней активности, аналогичное принту ниже
-            #print('Последняя активность: ', f"{last_activity.strip()}")
+            third_mess_2 = third_mess_2_1 + third_mess_2_2  # Вывод последней активности, аналогичное принту ниже
+            # print('Последняя активность: ', f"{last_activity.strip()}")
         except:
             third_mess_2 = "Невозможно получить данные о последней активности пользователя\n"
-            #print("Невозможно получить данные о последней активности пользователя")
+            # print("Невозможно получить данные о последней активности пользователя")
 
         try:
             a = []
@@ -51,15 +51,15 @@ def parser(user_id):
                 cnt += 1
             for i in range(0, cnt - 1):
                 third_mess_3 += f"{a[i].strip()}\n"
-                #print(f"{a[i].strip()}")
+                # print(f"{a[i].strip()}")
 
         except:
             third_mess_3 = "Страница пользователя является закрытой"
 
         third_mess_4_1 = "Ссылка на страницу: "
         third_mess_4_2 = f"{url}"
-        third_mess_4 = third_mess_4_1 + third_mess_4_2  #Вывод ссылки на страницу аналогично нижнему принту (только в виде переменной)
-        #print("Ссылка на страницу: ", f"{url}")  # ССЫЛКА НА СТРАНИЦУ
+        third_mess_4 = third_mess_4_1 + third_mess_4_2  # Вывод ссылки на страницу аналогично нижнему принту
+        # print("Ссылка на страницу: ", f"{url}")  # ССЫЛКА НА СТРАНИЦУ
         third_mess = third_mess_1 + third_mess_2 + third_mess_3 + third_mess_4
         return third_mess
     else:
