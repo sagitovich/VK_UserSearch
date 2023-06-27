@@ -21,30 +21,12 @@ def response(function_call):
               bot.send_message(function_call.message.chat.id, second_mess) #Показать второе сообщение
               bot.answer_callback_query(function_call.id) #Обработка команды закончена
 
-import requests
-from bs4 import BeautifulSoup
+from parser import parser
+
+
 @bot.message_handler(content_types=['text'])
 def get_answer(message):
-    url = "https://vk.com/" + message.text  # создание ссылки
-    src = requests.get(url).text  # получаем html код страницы пользователя и переводим его в сплошной текст
-
-    with open("index.html", "w") as file:  # открываем файл "index.html" для записи (он автоматически создаётся)
-        file.write(src)  # записываем в него html код страницы пользователя
-
-    with open("index.html") as file:  # открываем файл "index.html"
-        src = file.read()  # считываем его в переменную src
-
-    soup = BeautifulSoup(src, "lxml")  # создаём переменную, вызывая которую, можно собирать данные с файла
-
-    exists = True
-    try:
-        user_name = soup.find(class_="op_header").text  # получаем имя пользователя и переводим его в текст
-        third_mess_1 = "Имя пользователя: "
-        third_mess_2 = f"{user_name.strip()}"
-        third_mess = third_mess_1 + third_mess_2 #Получаем имя фамилию
-    except:
-        exists = False
-        third_mess = "Пользователя с таким id не существует" # суть в том, что, если пользователя не существует, то паркер не найдёт таких данных, как "имя пользователя"
+    third_mess = parser(message.text)
     bot.send_message(message.chat.id, third_mess)  # Показать второе сообщение
 
 
