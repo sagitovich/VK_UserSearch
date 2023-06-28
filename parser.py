@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 
-def parser(user_id):
+def parser_vk_id(user_id):
     url = "https://vk.com/" + user_id  # создание ссылки
     src = requests.get(url).text  # получаем html код страницы пользователя и переводим его в сплошной текст
 
@@ -66,9 +66,3 @@ def parser(user_id):
         exit()
 
 
-#parser()
-
-# user_birthday = soup.find(class_="")                            # ДАТА РОЖДЕНИЯ
-# for i in user_birthday:
-#     birthday = i.text
-#     print("Дата рождения: ", f"{birthday.strip()}")
