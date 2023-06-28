@@ -9,8 +9,7 @@ from telebot import types
 def startBot(message):
     first_mess = f"<b>{message.from_user.first_name}</b>, привет!\n Хочешь кого-то найти?"  # Первое сообщение
     markup = types.InlineKeyboardMarkup()  # Создание кнопки как переменной
-    button_yes = types.InlineKeyboardButton(text='Да',
-                                            callback_data='yes')  # Текст кнопки и значение, которое принимает
+    button_yes = types.InlineKeyboardButton(text='Да', callback_data='yes')  # Текст кнопки и значение, которое принимает
     markup.add(button_yes)  # Добавление кнопки
     bot.send_message(message.chat.id, first_mess, parse_mode='html', reply_markup=markup)  # Вывод всего что выше
 
@@ -19,9 +18,29 @@ def startBot(message):
 def response(function_call):
     if function_call.message:
         if function_call.data == "yes":  # Если нажали кнопку "Да"
-            second_mess = "Напиши его id"  # Второе сообщение, после "Да"
+            second_mess = "Напиши id человека, которого хочешь найти"  # Второе сообщение, после "Да"
             bot.send_message(function_call.message.chat.id, second_mess)  # Показать второе сообщение
             bot.answer_callback_query(function_call.id)  # Обработка команды закончена
+        elif function_call.data == "end":
+            end_mess = "Приятно было познакомится, пока!"
+            bot.send_message(function_call.message.chat.id, end_mess)
+            bot.answer_callback_query(function_call.id)
+
+
+@bot.message_handler(commands=['help'])  # Команда хелп
+def helpBot(message):
+    help_mess = f"Вот команды, которые я умею:\n/start (Начало работы)\n/stop (Конец работы)\nТакже в мои возможности входит поиск людей во ВКонтакте.\nЧтобы найти человека напиши его id в VK"
+    bot.send_message(message.chat.id, help_mess)
+
+
+@bot.message_handler(commands=['stop'])  # Команда стоп
+def stopBot(message):
+    stop_mess = f"Уже закончили?"
+    markup = types.InlineKeyboardMarkup()
+    button_yes = types.InlineKeyboardButton(text='Да', callback_data='end')
+    button_no = types.InlineKeyboardButton(text='Нет', callback_data='yes')
+    markup.add(button_yes, button_no)
+    bot.send_message(message.chat.id, stop_mess, parse_mode='html', reply_markup=markup)
 
 
 from parser import parser_vk_id
