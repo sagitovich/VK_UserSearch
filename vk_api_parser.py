@@ -1,40 +1,97 @@
 import csv
 import requests
 
-domain = input("Введите id пользователя: ")
-output_info = ''
+def vk_api_user():
 
-token = "ad96b9c4ad96b9c4ad96b9c492ae8278d7aad96ad96b9c4c90bfd7846231f51c7fc965e"
-version = 5.131
-fields = 'bdate, city, domain, contacts, site'    # имя, фамилия, дата рождения, город, номер телефона, сайт
-user_info = []
+    domain = input("Введите id пользователя: ")
+    output_info = ''
 
-# https://api.vk.com/method/users.get?user_ids=a.sagitovich&fields=bdate&access_token=ad96b9c4ad96b9c4ad96b9c492ae8278d7aad96ad96b9c4c90bfd7846231f51c7fc965e&v=5.131
+    token = "ad96b9c4ad96b9c4ad96b9c492ae8278d7aad96ad96b9c4c90bfd7846231f51c7fc965e"
+    version = 5.131
+    fields = 'bdate, city, domain, contacts, site'    # имя, фамилия, дата рождения, город, номер телефона, сайт
 
-src = requests.get('https://api.vk.com/method/users.get',
-                        params={
-                            'user_ids': domain,
-                            'fields': fields,
-                            'access_token': token,
-                            'v': version
-                        }
-                        )
+    # https://api.vk.com/method/users.get?user_ids=a.sagitovich&fields=bdate&access_token=ad96b9c4ad96b9c4ad96b9c492ae8278d7aad96ad96b9c4c90bfd7846231f51c7fc965e&v=5.131
 
-data = src.json()
-user_info.extend(data)
+    src = requests.get('https://api.vk.com/method/users.get',
+                            params={
+                                'user_ids': domain,
+                                'fields': fields,
+                                'access_token': token,
+                                'v': version
+                            }
+                            )
+
+    data = src.json()
 
 
-with open('info.csv', 'w') as file:
-    write = csv.writer(file)
-    write.writerow(('Имя', 'Фамилия', 'Дата рождения', 'Город', 'Номер телефона', 'Cайт'))
-    write.writerow((data['response'][0]['first_name'], data['response'][0]['last_name'], data['response'][0]['bdate'], data['response'][0]['city']['title'], data['response'][0]['mobile_phone'], data['response'][0]['site']))
+    with open('info.csv', 'w') as file:
+        write = csv.writer(file)
+        write.writerow(('ID VK', 'Имя', 'Фамилия', 'Дата рождения', 'Город', 'Номер телефона', 'Cайт'))
 
-    output_info += ('Имя: ' + data['response'][0]['first_name'] + '\n')
-    output_info += ('Фамилия: ' + data['response'][0]['last_name'] + '\n')
-    output_info += ('Дата рождения: ' + data['response'][0]['bdate'] + '\n')
-    output_info += ('Город: ' + data['response'][0]['city']['title'] + '\n')
-    output_info += ('Номер телефона: ' + data['response'][0]['mobile_phone'] + '\n')
-    output_info += ('Cайт: ' + data['response'][0]['site'])
+        if data['response'].__len__() != 0:   # если аккаунт существует
 
-print(output_info)
+            user_id = data['response'][0]['domain']
+            f_name = data['response'][0]['first_name']
+            l_name = data['response'][0]['last_name']
 
+            output_info += ('Страница ВК: ' + 'https://vk.com/' + user_id + '\n')
+            output_info += ('Имя: ' + f_name + '\n')
+            output_info += ('Фамилия: ' + l_name + '\n')
+
+            ################ ДАТА РОЖДЕНИЯ ######################
+
+            try:
+                if data['response'][0]['bdate'] != '':
+                    b_date = data['response'][0]['bdate']
+                else:
+                    b_date = 'нет данных'
+            except:
+                b_date = 'нет данных'
+            output_info += ('День рождения: ' + b_date + '\n')
+
+            #################### ГОРОД #######################
+
+            try:
+                if data['response'][0]['city']['title'] != '':
+                    city = data['response'][0]['city']['title']
+                else:
+                    city = 'нет данных'
+            except:
+                city = 'нет данных'
+            output_info += ('Город: ' + city + '\n')
+
+            #################### НОМЕР ТЕЛЕФОНА #######################
+
+            try:
+                if data['response'][0]['mobile_phone'] != '':
+                    mobile = data['response'][0]['mobile_phone']
+                else:
+                    mobile = 'нет данных'
+            except:
+                mobile = 'нет данных'
+            output_info += ('Номер телефона: ' + mobile + '\n')
+
+            #################### САЙТ #######################
+
+            try:
+                if data['response'][0]['site'] != '':
+                    site = data['response'][0]['site']
+                else:
+                    site = 'нет данных'
+            except:
+                site = 'нет данных'
+            output_info += ('Сайт: ' + site)
+
+            #######################################################
+
+            write.writerow((user_id, f_name, l_name, b_date, city, mobile, site))
+
+        else:
+            output_info += 'Пользователя не существует'
+
+
+    return output_info
+
+
+
+print(vk_api_user())

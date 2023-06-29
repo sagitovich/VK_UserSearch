@@ -62,4 +62,45 @@ def parser():
         exit()
 
 
-parser()
+def user_groups():
+
+    output_info = ''
+    groups_count = 0
+    user_id = input("Введите id пользователя: ")
+    url = "https://m.vk.com/" + user_id + "?act=idols"
+    src = requests.get(url).text
+
+    with open("user_groups.html", "w") as file:
+        file.write(src)
+
+    # у нас есть ссылка, название, статус, подписчики группы
+    # создав переменную count можно узнать число групп
+
+    with open("user_groups.html") as file:
+        src = file.read()
+
+    soup = BeautifulSoup(src, "lxml")
+
+    # ссылка: 'https://vk.com' + class_='upanel bl_cont'->'href'
+    # название: class_='si_owner'
+    # статус: class_='si_status'
+    # подписчики: class_='si_label' + class_='num_delim'
+
+    group_name = soup.find_all(class_='si_owner')
+    for i in group_name:
+        group = i.text
+        groups_count += 1
+        output_info += ('Название группы: ' + group + '\n')
+
+    print(output_info, groups_count)
+
+    # group_link = soup.find_all('href')
+    # for i in group_link:
+    #     link = i.text
+    #     output_info += ('https://vk.com' + link + '\n')
+    #
+    # print(output_info)
+
+user_groups()
+
+
