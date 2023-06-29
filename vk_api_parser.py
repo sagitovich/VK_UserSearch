@@ -109,28 +109,3 @@ def vk_api_user(domain):
     return output_info
 
 
-
-# def vk_api_users():
-#
-#     print("Какой промежуток id вы желаете проверить?")
-#     start_domain = input("От: ")
-#     finish_domain = input("До : ")
-#     output_info = ''
-#
-#     token = "ad96b9c4ad96b9c4ad96b9c492ae8278d7aad96ad96b9c4c90bfd7846231f51c7fc965e"
-#     version = 5.131
-#     fields = 'bdate, city, domain, contacts, site, sex'  # имя, фамилия, дата рождения, город, номер телефона, сайт, пол
-#
-#     # https://api.vk.com/method/users.get?user_ids=a.sagitovich&fields=bdate&access_token=ad96b9c4ad96b9c4ad96b9c492ae8278d7aad96ad96b9c4c90bfd7846231f51c7fc965e&v=5.131
-#
-#     src = requests.get('https://api.vk.com/method/users.get',
-#                        params={
-#                            'user_ids': start_domain,
-#                            'fields': fields,
-#                            'access_token': token,
-#                            'v': version
-#                        }
-#                        )
-#
-#     data = src.json()
-
