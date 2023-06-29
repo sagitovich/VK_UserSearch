@@ -8,7 +8,7 @@ def vk_api_user():
 
     token = "ad96b9c4ad96b9c4ad96b9c492ae8278d7aad96ad96b9c4c90bfd7846231f51c7fc965e"
     version = 5.131
-    fields = 'bdate, city, domain, contacts, site'    # имя, фамилия, дата рождения, город, номер телефона, сайт
+    fields = 'bdate, city, domain, contacts, site, sex'    # имя, фамилия, дата рождения, город, номер телефона, сайт, пол
 
     # https://api.vk.com/method/users.get?user_ids=a.sagitovich&fields=bdate&access_token=ad96b9c4ad96b9c4ad96b9c492ae8278d7aad96ad96b9c4c90bfd7846231f51c7fc965e&v=5.131
 
@@ -26,7 +26,7 @@ def vk_api_user():
 
     with open('info.csv', 'w') as file:
         write = csv.writer(file)
-        write.writerow(('ID VK', 'Имя', 'Фамилия', 'Дата рождения', 'Город', 'Номер телефона', 'Cайт'))
+        write.writerow(('ID VK', 'Имя', 'Фамилия', 'Дата рождения', 'Пол', 'Город', 'Номер телефона', 'Cайт'))
 
         if data['response'].__len__() != 0:   # если аккаунт существует
 
@@ -49,7 +49,24 @@ def vk_api_user():
                 b_date = 'нет данных'
             output_info += ('День рождения: ' + b_date + '\n')
 
-            #################### ГОРОД #######################
+            ###################### ПОЛ #########################
+            # 1 — женский  2 — мужской 0 — пол не указан
+
+            try:
+                if data['response'][0]['sex'] != '':
+                    if data['response'][0]['sex'] == 1:
+                        sex = 'женский'
+                    if data['response'][0]['sex'] == 2:
+                        sex = 'мужской'
+                    if data['response'][0]['sex'] == 0:
+                        sex = 'нет данных'
+                else:
+                    sex = 'нет данных'
+            except:
+                sex = 'нет данных'
+            output_info += ('Пол: ' + sex + '\n')
+
+            #################### ГОРОД #########################
 
             try:
                 if data['response'][0]['city']['title'] != '':
@@ -84,7 +101,7 @@ def vk_api_user():
 
             #######################################################
 
-            write.writerow((user_id, f_name, l_name, b_date, city, mobile, site))
+            write.writerow((user_id, f_name, l_name, b_date, sex, city, mobile, site))
 
         else:
             output_info += 'Пользователя не существует'
