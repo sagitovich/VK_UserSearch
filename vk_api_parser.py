@@ -1,9 +1,8 @@
 import csv
 import requests
 
-def vk_api_user():
+def vk_api_user(domain):
 
-    domain = input("Введите id пользователя: ")
     output_info = ''
 
     token = "ad96b9c4ad96b9c4ad96b9c492ae8278d7aad96ad96b9c4c90bfd7846231f51c7fc965e"
@@ -108,7 +107,3 @@ def vk_api_user():
 
 
     return output_info
-
-
-
-print(vk_api_user())
