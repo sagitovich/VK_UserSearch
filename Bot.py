@@ -43,12 +43,12 @@ def response(function_call):
             bot.answer_callback_query(function_call.id)
 
 
-from parser import parser_vk_id
+from vk_api_parser import vk_api_user
 
 
 @bot.message_handler(content_types=['text'])
 def get_answer(message):
-    third_mess = parser_vk_id(message.text)
+    third_mess = vk_api_user(message.text)
     bot.send_message(message.chat.id, third_mess)  # Показать третье сообщение
 
 
