@@ -35,7 +35,7 @@ def vk_api_user(domain):
             f_name = data['response'][0]['first_name']
             l_name = data['response'][0]['last_name']
 
-            output_info += ('Страница ВК: ' + 'https://vk.com/' + user_id + '\n')
+            output_info += ('Страница ВК: ' + 'https://vk.com/id' + user_id + '\n')
             output_info += ('Имя: ' + f_name + '\n')
             output_info += ('Фамилия: ' + l_name + '\n')
 
@@ -126,4 +126,6 @@ def vk_api_user(domain):
     return output_info
 
 
-print(vk_api_user('1'))
+a = input()
+a = str(a)
+print(vk_api_user(a))
