@@ -49,12 +49,13 @@ from vk_api_parser import vk_api_user
 @bot.message_handler(content_types=['text'])
 def get_answer(message):
     third_mess = vk_api_user(message.text)
+    # for i in range(35468345, 35468446):
+    #     vk_api_user(str(i))
+    #     i = int(i)
+    #     i += 1
     bot.send_message(message.chat.id, third_mess)  # Показать третье сообщение
 
-for i in range(500, 601):
-    vk_api_user(str(i))
-    i = int(i)
-    i += 1
+
 
 
 bot.infinity_polling()

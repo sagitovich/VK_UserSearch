@@ -23,13 +23,14 @@ def vk_api_user(domain):
 
     data = src.json()
 
+
     try:
         # ПОДКЛЮЧАЕМСЯ К БАЗЕ ДАННЫХ
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
 
-        if data['response'].__len__() != 0:   # ЕСЛИ АККАУНТ СУЩЕСТВУЕТ
+        if (data['response'].__len__() != 0) and (data['response'][0]['sex'] != 0):   # ЕСЛИ АККАУНТ СУЩЕСТВУЕТ
 
             user_id = str(data['response'][0]['id'])
             f_name = data['response'][0]['first_name']
@@ -125,7 +126,3 @@ def vk_api_user(domain):
 
     return output_info
 
-
-a = input()
-a = str(a)
-print(vk_api_user(a))
