@@ -1,4 +1,6 @@
-import csv
+# -*- coding: utf8 -*-
+# import csv
+import sqlite3
 import requests
 
 def vk_api_user(domain):
@@ -22,10 +24,11 @@ def vk_api_user(domain):
 
     data = src.json()
 
+    try:
+        # Создаем подключение к базе данных
+        conn = sqlite3.connect('database.db')
+        cursor = conn.cursor()
 
-    with open('info.csv', 'w') as file:
-        write = csv.writer(file)
-        write.writerow(('ID VK', 'Имя', 'Фамилия', 'Дата рождения', 'Пол', 'Город', 'Номер телефона', 'Cайт'))
 
         if data['response'].__len__() != 0:   # если аккаунт существует
 
@@ -100,13 +103,32 @@ def vk_api_user(domain):
 
             #######################################################
 
-            write.writerow((user_id, f_name, l_name, b_date, sex, city, mobile, site))
+            # write.writerow((user_id, f_name, l_name, b_date, sex, city, mobile, site))
+
+            # Создаем запрос
+            query = """INSERT INTO Users ('VK ID', Firstname, Lastname, 'Birth date', City, 'Phone number', Website) \
+                                    VALUES (?, ?, ?, ?, ?, ?, ?)"""
+            # Вставляем данные в таблицу
+            data_tuple = (user_id, f_name, l_name, b_date, city, mobile, site)
+            count = cursor.execute(query, data_tuple)
+
+            # Сохраняем изменения
+            conn.commit()
+
 
         else:
             output_info += 'Пользователя не существует'
+
+        # Закрываем соединение
+        cursor.close()
+    except sqlite3.Error as error:
+        print("Ошибка при работе с SQLite", error)
+    finally:
+        if conn:
+            conn.close()
 
 
     return output_info
 
 
-vk_api_user('mureliz')
+print(vk_api_user('seshasokolov'))
