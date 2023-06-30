@@ -29,7 +29,7 @@ def vk_api_user(domain):
 
         if data['response'].__len__() != 0:   # если аккаунт существует
 
-            user_id = data['response'][0]['domain']
+            user_id = str(data['response'][0]['id'])
             f_name = data['response'][0]['first_name']
             l_name = data['response'][0]['last_name']
 
@@ -109,3 +109,4 @@ def vk_api_user(domain):
     return output_info
 
 
+vk_api_user('mureliz')
