@@ -1,5 +1,4 @@
 # -*- coding: utf8 -*-
-# import csv
 import sqlite3
 import requests
 
@@ -25,12 +24,12 @@ def vk_api_user(domain):
     data = src.json()
 
     try:
-        # Создаем подключение к базе данных
+        # ПОДКЛЮЧАЕМСЯ К БАЗЕ ДАННЫХ
         conn = sqlite3.connect('database.db')
         cursor = conn.cursor()
 
 
-        if data['response'].__len__() != 0:   # если аккаунт существует
+        if data['response'].__len__() != 0:   # ЕСЛИ АККАУНТ СУЩЕСТВУЕТ
 
             user_id = str(data['response'][0]['id'])
             f_name = data['response'][0]['first_name']
@@ -52,7 +51,6 @@ def vk_api_user(domain):
             output_info += ('День рождения: ' + b_date + '\n')
 
             ###################### ПОЛ #########################
-            # 1 — женский  2 — мужской 0 — пол не указан
 
             try:
                 if data['response'][0]['sex'] != '':
@@ -103,23 +101,20 @@ def vk_api_user(domain):
 
             #######################################################
 
-            # write.writerow((user_id, f_name, l_name, b_date, sex, city, mobile, site))
-
-            # Создаем запрос
+            # СОЗДАЁМ ЗАПРОС
             query = """INSERT INTO Users ('VK ID', Firstname, Lastname, 'Birth date', City, 'Phone number', Website) \
                                     VALUES (?, ?, ?, ?, ?, ?, ?)"""
-            # Вставляем данные в таблицу
+
+            # ВСТАВЛЯЕМ ДАННЫЕ В ТАБЛИЦУ
             data_tuple = (user_id, f_name, l_name, b_date, city, mobile, site)
             count = cursor.execute(query, data_tuple)
 
-            # Сохраняем изменения
-            conn.commit()
-
+            conn.commit()   # СОХРАНЯЕМ ИЗМЕНЕНИЯ
 
         else:
             output_info += 'Пользователя не существует'
 
-        # Закрываем соединение
+        # ЗАКРЫВАЕМ СОЕДИНЕНИЕ
         cursor.close()
     except sqlite3.Error as error:
         print("Ошибка при работе с SQLite", error)
@@ -131,4 +126,4 @@ def vk_api_user(domain):
     return output_info
 
 
-print(vk_api_user('seshasokolov'))
+print(vk_api_user('1'))
