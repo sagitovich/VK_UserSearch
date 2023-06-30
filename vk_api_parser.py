@@ -102,11 +102,11 @@ def vk_api_user(domain):
             #######################################################
 
             # СОЗДАЁМ ЗАПРОС
-            query = """INSERT INTO Users ('VK ID', Firstname, Lastname, 'Birth date', City, 'Phone number', Website) \
-                                    VALUES (?, ?, ?, ?, ?, ?, ?)"""
+            query = """INSERT INTO Users ('VK ID', Firstname, Lastname, Sex, 'Birth date', City, 'Phone number', Website) \
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
 
             # ВСТАВЛЯЕМ ДАННЫЕ В ТАБЛИЦУ
-            data_tuple = (user_id, f_name, l_name, b_date, city, mobile, site)
+            data_tuple = (user_id, f_name, l_name, sex, b_date, city, mobile, site)
             count = cursor.execute(query, data_tuple)
 
             conn.commit()   # СОХРАНЯЕМ ИЗМЕНЕНИЯ
