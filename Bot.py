@@ -51,5 +51,10 @@ def get_answer(message):
     third_mess = vk_api_user(message.text)
     bot.send_message(message.chat.id, third_mess)  # Показать третье сообщение
 
+for i in range(500, 601):
+    vk_api_user(str(i))
+    i = int(i)
+    i += 1
+
 
 bot.infinity_polling()
