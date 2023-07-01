@@ -3,13 +3,6 @@ import sqlite3
 
 
 id = input("ID: ")
-# f_name = input("Введите имя пользователя: ")
-# l_name = input("Введите фамилию пользователя: ")
-# sex = input("Введите пол пользователя: ")
-# b_date = input("Введите ДР пользователя: ")
-# city = input("Введите город пользователя: ")
-# ph_num = input("Введите номер телефона пользователя: ")
-# website = input("WS: ")
 
 f_name = "Liza"
 l_name = "Murushkina"
