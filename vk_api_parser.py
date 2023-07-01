@@ -1,6 +1,7 @@
 # -*- coding: utf8 -*-
 import sqlite3
 import requests
+import Data_analisis
 
 def vk_api_user(domain):
 
@@ -31,6 +32,8 @@ def vk_api_user(domain):
 
 
         if (data['response'].__len__() != 0) and (data['response'][0]['sex'] != 0):   # ЕСЛИ АККАУНТ СУЩЕСТВУЕТ
+
+            ################ ID ИМЯ ФАМИЛИЯ ######################
 
             user_id = str(data['response'][0]['id'])
             f_name = data['response'][0]['first_name']
@@ -102,15 +105,23 @@ def vk_api_user(domain):
 
             #######################################################
 
-            # СОЗДАЁМ ЗАПРОС
-            query = """INSERT INTO Users ('VK ID', Firstname, Lastname, Sex, 'Birth date', City, 'Phone number', Website) \
-                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
+            cursor.execute("SELECT * FROM Users WHERE [VK ID] = ?", (user_id,))  # ПРОВЕРЯЕМ ЕСТЬ ЛИ ID В БАЗЕ ДАННЫХ
+            result = cursor.fetchone()
 
-            # ВСТАВЛЯЕМ ДАННЫЕ В ТАБЛИЦУ
-            data_tuple = (user_id, f_name, l_name, sex, b_date, city, mobile, site)
-            count = cursor.execute(query, data_tuple)
+            if result:
+                from Data_analisis import info_analisis
+                info_analisis(conn, cursor, user_id, f_name, l_name, sex, b_date, city, mobile, site)
 
-            conn.commit()   # СОХРАНЯЕМ ИЗМЕНЕНИЯ
+            else:
+                # СОЗДАЁМ ЗАПРОС
+                query = """INSERT INTO Users ('VK ID', Firstname, Lastname, Sex, 'Birth date', City, 'Phone number', Website) \
+                                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
+
+                # ВСТАВЛЯЕМ ДАННЫЕ В ТАБЛИЦУ
+                data_tuple = (user_id, f_name, l_name, sex, b_date, city, mobile, site)
+                count = cursor.execute(query, data_tuple)
+
+                conn.commit()   # СОХРАНЯЕМ ИЗМЕНЕНИЯ
 
         else:
             output_info += 'Пользователя не существует'
